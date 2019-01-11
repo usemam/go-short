@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: My URL shortener
+  description: URL shortener using Go and AWS Lambda
+  contact:
+    name: Usein Mambediiev
+    email: useinm@gmail.com
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+schemes: 
+- "http"
+paths:
+  /shorten:
+    post:
+      summary: Create new short URL
+      consumes: 
+        - "application/json"
+      produces: 
+        - "application/json"
+      parameters: 
+        - in: "body"
+          name: "body"
+          description: "URL that needs to be shorten"
+          required: true
+          schema:
+            $ref: '#/definitions/Request'
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Response'
+  /:
+    get:
+      summary: Redirects to original URL using its short alias
+      parameters: 
+        - in: "query"
+          name: "url"
+          required: true
+          type: string
+      responses:
+        301:
+          description: "successful operation"
+        200:
+          description: "redirect didn't happen due to error"
+definitions:
+  Request:
+    type: "object"
+    required: 
+      - "URL"
+    properties:
+      URL:
+        type: "string"
+  Response:
+    type: "object"
+    required: 
+      - "ShortURL"
+    properties:
+      ShortURL:
+        type: "string"
